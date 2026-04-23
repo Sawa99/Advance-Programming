@@ -12,9 +12,11 @@ use App\Models\Assignment;
 
 class Module extends Model
 {
-    public function award(): BelongsToMany
+    protected $fillable = ['name', 'credits', 'level'];
+
+    public function awards(): BelongsToMany
     {
-        return $this->belongsToMany(Award::class, 'award_modules');
+        return $this->belongsToMany(Award::class, 'award_module');
     }
 
     public function assignments(): hasMany
