@@ -55,14 +55,10 @@ Route::put('/assignments/{id}', [AssignmentController::class, 'update'])
 Route::delete('/assignments/{id}', [AssignmentController::class, 'destroy'])
     ->name('assignments.destroy');
 
-Route::get('/marks', [MarkController::class, 'index'])
-    ->name('marks.index');
 Route::get('/marks/create', [MarkController::class, 'create'])
     ->name('marks.create');
 Route::post('/marks', [MarkController::class, 'store'])
     ->name('marks.store');
-Route::get('/marks/{id}', [MarkController::class, 'show'])
-    ->name('marks.show');
 Route::get('/marks/{id}/edit', [MarkController::class, 'edit'])
     ->name('marks.edit');
 Route::put('/marks/{id}', [MarkController::class, 'update'])
