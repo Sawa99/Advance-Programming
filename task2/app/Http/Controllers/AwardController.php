@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Award;
-use App\Models\Book;
 use Illuminate\Http\Request;
 
 class AwardController extends Controller
@@ -17,10 +16,8 @@ class AwardController extends Controller
     }
 
     public function show(Request $request){
-        $award = Award::all()->findOrFail($request->id);
-        return view('awards.show',
-            ['award' => $award]
-        );
+        $award = Award::with('modules')->findOrFail($request->id);
+        return view('awards.show');
     }
 
     public function create(Request $request)
