@@ -1,6 +1,5 @@
-<?php
 
-<h2>{{ $award->title }}</h2>
+<h2>{{ $award->name }}</h2>
 
 <!-- Edit and delete links -->
 <ul>

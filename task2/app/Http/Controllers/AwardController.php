@@ -3,21 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Award;
+use App\Models\Module;
 use Illuminate\Http\Request;
 
 class AwardController extends Controller
 {
     public function index(Request $request)
     {
-        $awards = Award::all();
-        return view('awards.index',
-            ['award' => $awards]
-        );
+        $awards = Award::All();
+        return view('awards.index', compact('awards'));
     }
 
     public function show(Request $request){
         $award = Award::with('modules')->findOrFail($request->id);
-        return view('awards.show');
+        return view('awards.show', ['award' => $award]);
     }
 
     public function create(Request $request)

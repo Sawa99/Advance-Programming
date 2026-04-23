@@ -8,17 +8,6 @@
     </a>
 @endcan
 
-<form method="GET" action="{{route('awards.index')}}">
-    <select name="genre">
-        <option value="">All Awards</option>
-        @foreach($awards as $award)
-            <option value="{{$award->id}}" >
-                {{$award->name}}
-            </option>
-        @endforeach
-    </select>
-    <button type="submit">Filter</button>
-</form>
 
 <p class="pl-4 p-2">There are {{ $awards->count() }} Awards(s):</p>
 <!-- List the books -->
@@ -26,7 +15,7 @@
     @foreach($awards as $award)
         <li>
             <a class="hover:underline hover:text-violet-400" href="{{ route('awards.show', $award) }}">
-                {{ $award->title }}
+                {{ $award->name }}
             </a>
         </li>
     @endforeach
