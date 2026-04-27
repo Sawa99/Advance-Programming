@@ -32,7 +32,7 @@ class MarkController extends Controller
 
     public function edit(Request $request)
     {
-        $mark = Mark::findOrFail($request->id);
+        $mark = Mark::with('assignment')->findOrFail($request->id);
         return view('marks.edit', ['mark' => $mark]);
     }
 
@@ -48,7 +48,7 @@ class MarkController extends Controller
         $mark = Mark::findOrFail($request->id);
         $mark->update($validated);
 
-        return redirect()->route('assignments.index');
+        return redirect()->route('assignments.show', $mark->assignment_id);
     }
 
     public function destroy(Request $request)

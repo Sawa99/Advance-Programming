@@ -42,7 +42,7 @@
                         <ul class="space-y-4">
                             @foreach($modules as $module)
                                 <li>
-                                    <strong>{{ $module->name }}</strong>
+                                    <a href="{{ route('modules.show', $module) }}" class="font-bold text-indigo-600 dark:text-indigo-400 hover:underline">{{ $module->name }}</a>
                                     <span class="text-sm text-gray-500 dark:text-gray-400">
                                         (Level {{ $module->level }}, {{ $module->credits }} credits)
                                     </span>
