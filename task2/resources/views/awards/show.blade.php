@@ -1,4 +1,3 @@
-
 <h2>{{ $award->name }}</h2>
 
 <!-- Edit and delete links -->
@@ -19,7 +18,7 @@
 
 <h3>Modules:</h3>
 <ul>
-    @foreach($award->Modules as $module)
+    @foreach($award->modules as $module)
         <li>{{ $module->name }}</li>
     @endforeach
 </ul>

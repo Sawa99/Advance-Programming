@@ -12,7 +12,7 @@ use App\Models\Assignment;
 
 class Module extends Model
 {
-    protected $fillable = ['name', 'credits', 'level'];
+    protected $fillable = ['name', 'credits', 'level', 'is_completed'];
 
     public function awards(): BelongsToMany
     {
