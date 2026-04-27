@@ -8,35 +8,32 @@ use App\Models\Assignment;
 
 class MarkController extends Controller
 {
-    public function create(Request $request)
+    public function create(Assignment $assignment)
     {
-        return view('marks.create');
+        return view('marks.create', compact('assignment'));
     }
-
-    public function store(Request $request)
+    public function store(Request $request, Assignment $assignment)
     {
-        $assignment = Assignment::findOrFail($request->input('assignment_id'));
-
         $validated = $request->validate([
             'mark' => 'required|numeric|min:0|max:' . $assignment->total_marks,
-            'assignment_id' => 'required|exists:assignments,id',
         ]);
 
         $mark = new Mark();
         $mark->mark = $validated['mark'];
-        $mark->assignment_id = $validated['assignment_id'];
+        $mark->assignment_id = $assignment->id;
+        $mark->user_id = auth()->id();
         $mark->save();
 
-        return redirect()->route('assignments.index');
+        return redirect()->route('assignments.show',  $assignment);
     }
 
-    public function edit(Request $request)
+    public function edit(Mark $mark)
     {
-        $mark = Mark::with('assignment')->findOrFail($request->id);
+        $mark->load('assignment');
         return view('marks.edit', ['mark' => $mark]);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, Mark $mark)
     {
         $assignment = Assignment::findOrFail($request->input('assignment_id'));
 
@@ -44,8 +41,7 @@ class MarkController extends Controller
             'mark' => 'required|numeric|min:0|max:' . $assignment->total_marks,
             'assignment_id' => 'required|exists:assignments,id',
         ]);
-
-        $mark = Mark::findOrFail($request->id);
+        
         $mark->update($validated);
 
         return redirect()->route('assignments.show', $mark->assignment_id);

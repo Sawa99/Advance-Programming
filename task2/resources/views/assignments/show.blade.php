@@ -28,9 +28,9 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex justify-between">
                     <h3 class="text-lg font-semibold mb-4">Your Mark</h3>
-                    <a href="{{ route('marks.create', $assignment) }}">
-                        Add Mark
-                    </a>
+                        <a href="{{ route('marks.create', $assignment) }}">
+                            Add Mark
+                        </a>
                     </div>
 
                     @if($mark)

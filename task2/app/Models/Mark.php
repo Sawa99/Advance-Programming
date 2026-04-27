@@ -9,6 +9,8 @@ use App\Models\Assignment;
 use App\Models\User;
 
 class Mark extends Model{
+
+    protected $fillable = ['mark', 'assignment_id', 'user_id'];
     public function assignment(): BelongsTo
     {
         return $this->belongsTo(Assignment::class);

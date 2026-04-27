@@ -39,11 +39,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/assignments/{id}', [AssignmentController::class, 'update'])->name('assignments.update');
     Route::delete('/assignments/{id}', [AssignmentController::class, 'destroy'])->name('assignments.destroy');
 
-    Route::get('/marks/create', [MarkController::class, 'create'])->name('marks.create');
-    Route::post('/marks', [MarkController::class, 'store'])->name('marks.store');
-    Route::get('/marks/{id}/edit', [MarkController::class, 'edit'])->name('marks.edit');
-    Route::put('/marks/{id}', [MarkController::class, 'update'])->name('marks.update');
-    Route::delete('/marks/{id}', [MarkController::class, 'destroy'])->name('marks.destroy');
+    Route::get('/assignments/{assignment}/marks/create', [MarkController::class, 'create'])->name('marks.create');
+    Route::post('/assignments/{assignment}/marks', [MarkController::class, 'store'])->name('marks.store');
+    Route::get('/marks/{mark}/edit', [MarkController::class, 'edit'])->name('marks.edit');
+    Route::put('/marks/{mark}', [MarkController::class, 'update'])->name('marks.update');
+    Route::delete('/marks/{mark}', [MarkController::class, 'destroy'])->name('marks.destroy');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
