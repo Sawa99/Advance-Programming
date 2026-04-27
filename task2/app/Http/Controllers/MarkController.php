@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Mark;
+use App\Models\Assignment;
 
 class MarkController extends Controller
 {
@@ -14,8 +15,10 @@ class MarkController extends Controller
 
     public function store(Request $request)
     {
+        $assignment = Assignment::findOrFail($request->input('assignment_id'));
+
         $validated = $request->validate([
-            'mark' => 'required|integer|min:0|max:100',
+            'mark' => 'required|numeric|min:0|max:' . $assignment->total_marks,
             'assignment_id' => 'required|exists:assignments,id',
         ]);
 
@@ -35,8 +38,10 @@ class MarkController extends Controller
 
     public function update(Request $request)
     {
+        $assignment = Assignment::findOrFail($request->input('assignment_id'));
+
         $validated = $request->validate([
-            'mark' => 'required|integer|min:0|max:100',
+            'mark' => 'required|numeric|min:0|max:' . $assignment->total_marks,
             'assignment_id' => 'required|exists:assignments,id',
         ]);
 

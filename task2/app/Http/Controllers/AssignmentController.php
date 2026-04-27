@@ -23,10 +23,12 @@ class AssignmentController extends Controller{
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'module_id' => 'required|exists:modules,id',
+            'total_marks' => 'required|numeric|min:1',
         ]);
         $assignment = new Assignment();
         $assignment->name = $validated['name'];
         $assignment->module_id = $validated['module_id'];
+        $assignment->total_marks = $validated['total_marks'];
         $assignment->save();
         return redirect()->route('assignments.index');
     }
@@ -40,6 +42,7 @@ class AssignmentController extends Controller{
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'module_id' => 'required|exists:modules,id',
+            'total_marks' => 'required|numeric|min:1',
         ]);
         $assignment = Assignment::findOrFail($request->id);
         $assignment->update($validated);

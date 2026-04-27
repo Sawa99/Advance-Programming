@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('module_id')->constrained('modules')->cascadeOnDelete();
             $table->string('name');
             $table->float('weight');
+            $table->float('total_marks');
             $table->timestamps();
         });
     }

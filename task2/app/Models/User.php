@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Award;
 use App\Models\Mark;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'award_id'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -35,7 +35,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function awards(): BelongsTo
+    public function award(): BelongsTo
     {
         return $this->belongsTo(Award::class);
     }

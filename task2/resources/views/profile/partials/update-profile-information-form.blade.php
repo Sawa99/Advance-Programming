@@ -47,6 +47,19 @@
             @endif
         </div>
 
+        <div>
+            <x-input-label for="award_id" :value="__('Award')" />
+            <select id="award_id" name="award_id" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm">
+                <option value="">— None —</option>
+                @foreach($awards as $award)
+                    <option value="{{ $award->id }}" {{ old('award_id', $user->award_id) == $award->id ? 'selected' : '' }}>
+                        {{ $award->name }}
+                    </option>
+                @endforeach
+            </select>
+            <x-input-error class="mt-2" :messages="$errors->get('award_id')" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
