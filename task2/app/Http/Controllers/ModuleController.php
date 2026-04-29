@@ -5,6 +5,7 @@ use App\Models\Module;
 use App\Models\Award;
 use App\Models\Assignment;
 use Illuminate\Http\Request;
+use App\Http\Requests\ModuleRequest;
 
 class ModuleController extends Controller
 {
@@ -25,16 +26,9 @@ class ModuleController extends Controller
             return view('modules.create', ['awards' => $awards]);
         }
 
-        public function store(Request $request)
+    public function store(ModuleRequest $request)
         {
-            $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'credits' => 'required|integer|min:0',
-                'level' => 'required|integer|min:1',
-                'awards' => 'nullable|array',
-                'awards.*' => 'exists:awards,id',
-            ]);
-
+            $validated = $request->validated();
             $module = Module::create($validated);
 
             if ($request->has('awards')) {
@@ -51,15 +45,9 @@ class ModuleController extends Controller
             return view('modules.edit', ['module' => $module, 'awards' => $awards]);
         }
 
-        public function update(Request $request)
+    public function update(ModuleRequest $request, Module $module)
         {
-            $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'credits' => 'required|integer|min:0',
-                'level' => 'required|integer|min:1',
-                'awards' => 'nullable|array',
-                'awards.*' => 'exists:awards,id',
-            ]);
+            $validated = $request->validated();
 
             $module = Module::findOrFail($request->id);
             $module->update($validated);

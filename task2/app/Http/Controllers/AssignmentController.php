@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Assignment;
 use App\Models\Module;
 use Illuminate\Http\Request;
+use App\Http\Requests\AssignmentRequest;
 
 class AssignmentController extends Controller{
     public function index(Request $request){
@@ -22,13 +23,8 @@ class AssignmentController extends Controller{
         return view('assignments.create', ['modules' => $modules]);
     }
 
-    public function store(Request $request){
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'module_id' => 'required|exists:modules,id',
-            'weight' => 'required|numeric|min:0|max:100',
-            'total_marks' => 'required|numeric|min:1',
-        ]);
+    public function store(AssignmentRequest $request) {
+        $validated = $request->validated();
         $assignment = new Assignment();
         $assignment->name = $validated['name'];
         $assignment->module_id = $validated['module_id'];
@@ -44,13 +40,8 @@ class AssignmentController extends Controller{
         return view('assignments.edit', ['assignment' => $assignment, 'modules' => $modules]);
     }
 
-    public function update(Request $request){
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'module_id' => 'required|exists:modules,id',
-            'weight' => 'required|numeric|min:0|max:100',
-            'total_marks' => 'required|numeric|min:1',
-        ]);
+    public function update(AssignmentRequest $request, Assignment $assignment){
+        $validated = $request->validated();
         $assignment = Assignment::findOrFail($request->id);
         $assignment->update($validated);
         return redirect()->route('assignments.show', $assignment->id);

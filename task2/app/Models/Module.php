@@ -23,4 +23,17 @@ class Module extends Model
     {
         return $this->hasMany(Assignment::class);
     }
+
+    public function isCompleted(): bool
+    {
+        // Must have at least one assignment, and every assignment must have a mark
+        return $this->assignments()->exists() &&
+            $this->assignments()->whereDoesntHave('marks')->doesntExist();
+    }
+
+    public function updateStatus(): void
+    {
+        $this->is_completed = $this->isCompleted();
+        $this->save();
+    }
 }

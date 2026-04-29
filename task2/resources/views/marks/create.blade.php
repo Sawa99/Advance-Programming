@@ -11,7 +11,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
 
                     <p class="mb-4 text-sm text-gray-500 dark:text-gray-400">
-                        Mark must be between 0 and {{ $mark->assignment->total_marks }}.
+                        Mark must be between 0 and {{ $assignment->total_marks }}.
                     </p>
                      <form method="POST" action="{{ route('marks.store', $assignment) }}">
                          @csrf
@@ -26,7 +26,6 @@
                                    name="mark"
                                    value="{{ old('mark') }}"
                                    min="0"
-                                   max="{{ $assignment->total_marks }}"
                                    step="0.01"
                                    class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md"
                                    required>
