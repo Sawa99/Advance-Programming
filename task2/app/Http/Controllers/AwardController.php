@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AwardResource;
 use App\Models\Award;
 use App\Models\Module;
 use Illuminate\Http\Request;
+
 
 class AwardController extends Controller
 {
@@ -12,6 +14,11 @@ class AwardController extends Controller
     {
         $awards = Award::All();
         return view('awards.index', compact('awards'));
+    }
+
+    public function apiIndex(Request $request){
+        $awards = Award::All();
+        return AwardResource::collection($awards);
     }
 
     public function show(Request $request){

@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ModuleResource;
 use App\Models\Module;
 use App\Models\Award;
 use App\Models\Assignment;
@@ -16,6 +17,7 @@ class ModuleController extends Controller
             $modules = Module::with('assignments.marks')->get();
             return view('modules.index', compact('modules'));
         }
+
         public function show(Request $request)
         {
             $module = Module::with(['assignments.marks' => function ($query) {
