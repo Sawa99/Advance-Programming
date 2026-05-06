@@ -18,37 +18,33 @@ class AssignmentController extends Controller{
         return view('assignments.show', ['assignment' => $assignment, 'mark' => $mark]);
     }
 
-    public function create(Request $request){
-        $modules = Module::all();
-        return view('assignments.create', ['modules' => $modules]);
+    public function create(Module $module){
+        return view('assignments.create', compact('module'));
     }
 
-    public function store(AssignmentRequest $request) {
+    public function store(AssignmentRequest $request, Module $module) {
         $validated = $request->validated();
         $assignment = new Assignment();
         $assignment->name = $validated['name'];
-        $assignment->module_id = $validated['module_id'];
+        $assignment->module_id = $module->id;
         $assignment->weight = $validated['weight'];
         $assignment->total_marks = $validated['total_marks'];
         $assignment->save();
         return redirect()->route('modules.show', $assignment->module_id);
     }
 
-    public function edit(Request $request){
-        $assignment = Assignment::findOrFail($request->id);
-        $modules = Module::all();
-        return view('assignments.edit', ['assignment' => $assignment, 'modules' => $modules]);
+    public function edit(Assignment $assignment) {
+        $assignment->load('module');
+        return view('assignments.edit', ['assignment' => $assignment]);
     }
 
     public function update(AssignmentRequest $request, Assignment $assignment){
         $validated = $request->validated();
-        $assignment = Assignment::findOrFail($request->id);
         $assignment->update($validated);
-        return redirect()->route('assignments.show', $assignment->id);
+        return redirect()->route('assignments.show', $assignment);
     }
-
-    public function destroy(Request $request){
-        $assignment = Assignment::findOrFail($request->id);
+    public function destroy(Assignment $assignment){
+        $assignment = Assignment::findOrFail($assignment->id);
         $assignment->delete();
         return redirect()->route('assignments.index');
     }

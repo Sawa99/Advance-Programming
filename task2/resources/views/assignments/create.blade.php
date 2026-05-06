@@ -10,28 +10,10 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
 
-                    <form method="POST" action="{{ route('assignments.store') }}">
+                    <form method="POST" action="{{ route('assignments.store', $module) }}">
                         @csrf
 
-                        {{-- Module --}}
-                        <div class="mb-4">
-                            <label for="module_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Module
-                            </label>
-                            <select id="module_id" name="module_id"
-                                    class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                                    required>
-                                <option value="">— Select a module —</option>
-                                @foreach($modules as $module)
-                                    <option value="{{ $module->id }}" {{ old('module_id') == $module->id ? 'selected' : '' }}>
-                                        {{ $module->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('module_id')
-                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        <input type="hidden" name="module_id" value="{{ $module->id }}">
 
                         {{-- Name --}}
                         <div class="mb-4">

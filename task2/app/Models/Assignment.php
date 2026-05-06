@@ -11,6 +11,7 @@ use App\Models\Mark;
 
 class Assignment extends Model
 {
+    protected $fillable = ['name', 'module_id', 'weight', 'total_marks'];
     public function module(): BelongsTo
     {
         return $this->belongsTo(Module::class);

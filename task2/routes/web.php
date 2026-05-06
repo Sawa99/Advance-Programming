@@ -32,12 +32,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/modules/{id}', [ModuleController::class, 'destroy'])->name('modules.destroy');
 
     Route::get('/assignments', [AssignmentController::class, 'index'])->name('assignments.index');
-    Route::get('/assignments/create', [AssignmentController::class, 'create'])->name('assignments.create');
-    Route::post('/assignments', [AssignmentController::class, 'store'])->name('assignments.store');
+    Route::get('/modules/{module}/assignments/create', [AssignmentController::class, 'create'])->name('assignments.create');
+    Route::post('/modules/{module}/assignments', [AssignmentController::class, 'store'])->name('assignments.store');
     Route::get('/assignments/{id}', [AssignmentController::class, 'show'])->name('assignments.show');
-    Route::get('/assignments/{id}/edit', [AssignmentController::class, 'edit'])->name('assignments.edit');
-    Route::put('/assignments/{id}', [AssignmentController::class, 'update'])->name('assignments.update');
-    Route::delete('/assignments/{id}', [AssignmentController::class, 'destroy'])->name('assignments.destroy');
+    Route::get('/assignments/{assignment}/edit', [AssignmentController::class, 'edit'])->name('assignments.edit');
+    Route::put('/assignments/{assignment}', [AssignmentController::class, 'update'])->name('assignments.update');
+    Route::delete('/assignments/{assignment}', [AssignmentController::class, 'destroy'])->name('assignments.destroy');
 
     Route::get('/assignments/{assignment}/marks/create', [MarkController::class, 'create'])->name('marks.create');
     Route::post('/assignments/{assignment}/marks', [MarkController::class, 'store'])->name('marks.store');

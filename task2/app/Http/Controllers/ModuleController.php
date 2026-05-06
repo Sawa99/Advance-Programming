@@ -6,6 +6,7 @@ use App\Models\Award;
 use App\Models\Assignment;
 use Illuminate\Http\Request;
 use App\Http\Requests\ModuleRequest;
+use App\Helpers\ClassificationHelper;
 
 class ModuleController extends Controller
 {
@@ -17,8 +18,15 @@ class ModuleController extends Controller
         }
         public function show(Request $request)
         {
-            $module = Module::with('assignments.marks')->findOrFail($request->id);
-            return view('modules.show', ['module' => $module]);
+            $module = Module::with(['assignments.marks' => function ($query) {
+                $query->where('user_id', auth()->id());
+            }])
+                ->findOrFail($request->id);
+
+            $currentPercentage = ClassificationHelper::modulePercentage($module->assignments);
+            $marksStillNeeded  = ClassificationHelper::marksStillNeeded($module->assignments);
+
+            return view('modules.show', compact('module', 'currentPercentage', 'marksStillNeeded'));
         }
         public function create(Request $request)
         {

@@ -34,7 +34,7 @@ class AwardController extends Controller
         $award = new Award();
         $award->name = $validated['name'];
         $award->save();
-        return redirect()->route('awards.index');
+        return redirect()->route('dashboard');
     }
 
     public function edit(Request $request)

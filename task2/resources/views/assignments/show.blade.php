@@ -11,7 +11,13 @@
             {{-- Assignment Details --}}
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <div class="flex justify-between">
                     <h3 class="text-lg font-semibold mb-4">Assignment Details</h3>
+                    <a href="{{ route('assignments.edit', $assignment) }}"
+                       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">
+                        Edit
+                    </a>
+                    </div>
                     <p><span class="font-medium">Module:</span>
                         <a href="{{ route('modules.show', $assignment->module) }}"
                            class="text-indigo-600 dark:text-indigo-400 hover:underline">
@@ -28,7 +34,8 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex justify-between">
                     <h3 class="text-lg font-semibold mb-4">Your Mark</h3>
-                        <a href="{{ route('marks.create', $assignment) }}">
+                        <a href="{{ route('marks.create', $assignment) }}"
+                           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">
                             Add Mark
                         </a>
                     </div>

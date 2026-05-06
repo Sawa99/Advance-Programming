@@ -24,6 +24,8 @@ class MarkController extends Controller
         $mark->assignment_id = $assignment->id;
         $mark->user_id = auth()->id();
         $mark->save();
+        $assignment->module->updateStatus();
+
 
         return redirect()->route('assignments.show',  $assignment);
     }

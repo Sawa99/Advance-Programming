@@ -25,7 +25,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex justify-between">
                     <h3 class="text-lg font-semibold mb-4">Assignments</h3>
-                    <a href="{{ route('assignments.create', ['module' => $module]) }}"
+                        <a href="{{ route('assignments.create', $module) }}"
                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">
                         Add Assignment
                     </a>
@@ -56,11 +56,34 @@
                 </div>
             </div>
 
-            {{-- Predicted Classification --}}
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h3 class="text-lg font-semibold mb-4">Predicted Classification</h3>
-                    <p class="text-gray-500 dark:text-gray-400 italic">Coming soon...</p>
+                    <h3 class="text-lg font-semibold mb-4">Module Calculation</h3>
+
+                    @if ($currentPercentage !== null)
+                        <p class="mb-4">Current percentage: <span class="font-medium">{{ $currentPercentage }}%</span>
+                            ({{ \App\Helpers\ClassificationHelper::getClassificationLabel($currentPercentage) }})
+                        </p>
+                    @else
+                        <p class="mb-4 text-gray-500 dark:text-gray-400 italic">No marks recorded yet.</p>
+                    @endif
+
+                    <table class="w-full text-sm">
+                        <thead>
+                        <tr class="text-left border-b border-gray-200 dark:border-gray-700">
+                            <th class="pb-2">Classification</th>
+                            <th class="pb-2">What you need</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($marksStillNeeded as $classification => $needed)
+                            <tr class="border-b border-gray-100 dark:border-gray-700">
+                                <td class="py-2">{{ $classification }}</td>
+                                <td class="py-2">{{ $needed }}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
 

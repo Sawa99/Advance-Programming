@@ -27,7 +27,7 @@
 
                         <div class="mb-4">
                             <x-input-label for="level" :value="__('Level')" />
-                            <x-text-input id="level" name="level" type="number" class="mt-1 block w-full" :value="old('level')" required min="1" />
+                            <x-text-input id="level" name="level" type="number" class="mt-1 block w-full" :value="old('level')" required min="4" max="6"/>
                             <x-input-error class="mt-2" :messages="$errors->get('level')" />
                         </div>
 
@@ -44,7 +44,17 @@
                             <x-input-error class="mt-2" :messages="$errors->get('awards')" />
                         </div>
 
-                        <x-primary-button>{{ __('Create Module') }}</x-primary-button>
+                        <div class="flex items-center gap-4">
+                            <button type="submit"
+                                    class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700">
+                                Add module
+                            </button>
+                            <a href="{{ route('dashboard') }}"
+                               class="text-sm text-gray-600 dark:text-gray-400 hover:underline">
+                                Cancel
+                            </a>
+
+                        </div>
                     </form>
 
                 </div>
