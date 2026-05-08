@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Collection;
+
 
 class ClassificationHelper{
 
@@ -25,22 +27,28 @@ class ClassificationHelper{
      * Each assignment contributes (mark / total_marks) * weight.
      * Only assignments that have a mark are included.
      *
-     * @param  \Illuminate\Database\Eloquent\Collection  $assignments
      * @return float|null  Current percentage, or null if no marks yet
      */
     public static function modulePercentage($assignments): ?float
     {
+        $assignments = collect($assignments);
         $weightedScore = 0;
         $weightCounted = 0;
 
         foreach ($assignments as $assignment) {
-            if ($assignment->marks->isEmpty()) {
+            // Using data_get to handle both objects (models) and arrays
+            $marks = data_get($assignment, 'marks');
+
+            if (!$marks || (is_iterable($marks) && count($marks) === 0)) {
                 continue;
             }
 
-            $mark = $assignment->marks->first()->mark;
-            $weightedScore += ($mark / $assignment->total_marks) * $assignment->weight;
-            $weightCounted += $assignment->weight;
+            $mark = data_get($marks->first(), 'mark');
+            $totalMarks = data_get($assignment, 'total_marks');
+            $weight = data_get($assignment, 'weight');
+
+            $weightedScore += ($mark / $totalMarks) * $weight;
+            $weightCounted += $weight;
         }
 
         if ($weightCounted === 0) {
@@ -55,15 +63,16 @@ class ClassificationHelper{
      * (unmarked) assignments to achieve each classification overall.
      *
      * Returns:
-     *   'Achieved'     — already at or above threshold with current marks
+     *   'Achieved'— already at or above threshold with current marks
      *   'Not possible' — mathematically impossible even with 100% on remaining
      *   '62.5% avg on remaining assignments' — what they need to hit it
      *
-     * @param  \Illuminate\Database\Eloquent\Collection  $assignments
      * @return array  ['First' => mixed, '2:1' => mixed, ...]
      */
     public static function marksStillNeeded($assignments): array
     {
+        $assignments = collect($assignments);
+
         if ($assignments->isEmpty()) {
             return [
                 'First' => 'No assignments',
@@ -72,26 +81,27 @@ class ClassificationHelper{
                 'Third' => 'No assignments',
             ];
         }
+
         $totalWeight = 0;
         $currentWeightedScore = 0;
         $remainingWeight = 0;
 
-
         foreach ($assignments as $assignment) {
-            $totalWeight += $assignment->weight;
+            $weight = data_get($assignment, 'weight');
+            $totalWeight += $weight;
+            $marks = data_get($assignment, 'marks');
 
-            if ($assignment->marks->isNotEmpty()) {
-                $mark = $assignment->marks->first()->mark;
-                $currentWeightedScore += ($mark / $assignment->total_marks) * $assignment->weight;
+            if ($marks && count($marks) > 0) {
+                $mark = data_get($marks->first(), 'mark');
+                $totalMarks = data_get($assignment, 'total_marks');
+                $currentWeightedScore += ($mark / $totalMarks) * $weight;
             } else {
-                $remainingWeight += $assignment->weight;
+                $remainingWeight += $weight;
             }
         }
 
         $result = [];
-
         foreach (self::CLASSIFICATIONS as $label => $threshold) {
-            // Score needed: (threshold / 100) * totalWeight
             $neededScore = ($threshold / 100) * $totalWeight;
             $stillNeededScore = $neededScore - $currentWeightedScore;
 
@@ -106,7 +116,6 @@ class ClassificationHelper{
             }
 
             $neededAvgPercent = ($stillNeededScore / $remainingWeight) * 100;
-
             $result[$label] = $neededAvgPercent > 100
                 ? 'Not possible'
                 : round($neededAvgPercent, 1) . '% avg on remaining assignments';
@@ -118,24 +127,27 @@ class ClassificationHelper{
     /**
      * Calculate a credit-weighted average percentage for a set of modules.
      *
-     * @param  array  $modules  Each: ['percentage' => float, 'credits' => int]
      * @return float|null
      */
-    public static function levelWeightedAverage(array $modules): ?float
+    public static function levelWeightedAverage($modules): ?float
     {
-        $totalCredits  = 0;
-        $weightedMarks = 0;
+        $modules = collect($modules);
 
-        foreach ($modules as $module) {
-            $totalCredits  += $module['credits'];
-            $weightedMarks += $module['percentage'] * $module['credits'];
+        if ($modules->isEmpty()) {
+            return null;
         }
+
+        $totalCredits = $modules->sum(fn($m) => data_get($m, 'credits'));
 
         if ($totalCredits === 0) {
             return null;
         }
 
-        return $weightedMarks / $totalCredits;
+        $weightedMarks = $modules->sum(function ($module) {
+            return data_get($module, 'percentage') * data_get($module, 'credits');
+        });
+
+        return round($weightedMarks / $totalCredits,2);
     }
 
     /**
@@ -145,13 +157,14 @@ class ClassificationHelper{
      * Incomplete modules use the user-supplied predicted percentage.
      * Level 5 = 30%, Level 6 = 70% of the final average.
      *
-     * @param  array  $level5Modules  Each: ['percentage' => float, 'credits' => int]
-     * @param  array  $level6Modules  Each: ['percentage' => float, 'credits' => int]
      * @return array  ['overall', 'classification', 'level5Average', 'level6Average']
      */
 
-    public static function predictClassification(array $level5Modules, array $level6Modules): array
+    public static function predictClassification($level5Modules,  $level6Modules): array
     {
+        $level5Modules = collect($level5Modules);
+        $level6Modules = collect($level6Modules);
+
         $level5Avg = self::levelWeightedAverage($level5Modules);
         $level6Avg = self::levelWeightedAverage($level6Modules);
 

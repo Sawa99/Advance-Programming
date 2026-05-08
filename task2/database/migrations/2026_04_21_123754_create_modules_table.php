@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('credits');
             $table->integer('level');
+            $table->boolean('is_completed')->default(false);
             $table->timestamps();
         });
     }
