@@ -115,10 +115,10 @@ class ClassificationHelper{
                 continue;
             }
 
-            $neededAvgPercent = ($stillNeededScore / $remainingWeight) * 100;
-            $result[$label] = $neededAvgPercent > 100
+            $neededAvgMarks = ($stillNeededScore / $remainingWeight) * $totalMarks;
+            $result[$label] = $neededAvgMarks > $totalMarks
                 ? 'Not possible'
-                : round($neededAvgPercent, 1) . '% avg on remaining assignments';
+                : round($neededAvgMarks, 1) . ' / ' . $totalMarks . ' on remaining assignments';
         }
 
         return $result;

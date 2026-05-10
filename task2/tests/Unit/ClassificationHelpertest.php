@@ -109,7 +109,7 @@ test('marksStillNeeded returns avg percentage string for reachable bands', funct
 
     $result = ClassificationHelper::marksStillNeeded($assignments);
 
-    expect($result['Third'])->toContain('% avg on remaining assignments');
+    expect($result['Third'])->toContain(' on remaining assignments');
 });
 
 //Testing levelWeightedAverage function
@@ -142,6 +142,7 @@ test('levelWeightedAverage weights higher-credit modules more', function () {
 });
 
 //Testing getClassificationLabel function
+
 test('getClassificationLabel returns First for 70 and above', function () {
     expect(ClassificationHelper::getClassificationLabel(70))->toBe('First');
     expect(ClassificationHelper::getClassificationLabel(85))->toBe('First');
