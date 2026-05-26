@@ -25,6 +25,10 @@
             <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
                 {{ $slot }}
             </div>
+
+            <p class="mt-6 text-sm text-gray-500 dark:text-gray-400">
+                &copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }}. All rights reserved.
+            </p>
         </div>
     </body>
 </html>
