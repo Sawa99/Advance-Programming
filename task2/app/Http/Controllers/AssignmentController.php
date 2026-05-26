@@ -30,6 +30,7 @@ class AssignmentController extends Controller{
         $assignment->weight = $validated['weight'];
         $assignment->total_marks = $validated['total_marks'];
         $assignment->save();
+        $module->updateStatus();
         return redirect()->route('modules.show', $assignment->module_id);
     }
 

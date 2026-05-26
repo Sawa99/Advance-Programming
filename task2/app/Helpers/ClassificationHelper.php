@@ -85,6 +85,7 @@ class ClassificationHelper{
         $totalWeight = 0;
         $currentWeightedScore = 0;
         $remainingWeight = 0;
+        $remainingTotalMarks = 0;
 
         foreach ($assignments as $assignment) {
             $weight = data_get($assignment, 'weight');
@@ -93,10 +94,11 @@ class ClassificationHelper{
 
             if ($marks && count($marks) > 0) {
                 $mark = data_get($marks->first(), 'mark');
-                $totalMarks = data_get($assignment, 'total_marks');
-                $currentWeightedScore += ($mark / $totalMarks) * $weight;
+                $assignmentTotalMarks = data_get($assignment, 'total_marks');
+                $currentWeightedScore += ($mark / $assignmentTotalMarks) * $weight;
             } else {
                 $remainingWeight += $weight;
+                $remainingTotalMarks = data_get($assignment, 'total_marks');
             }
         }
 
@@ -115,10 +117,10 @@ class ClassificationHelper{
                 continue;
             }
 
-            $neededAvgMarks = ($stillNeededScore / $remainingWeight) * $totalMarks;
-            $result[$label] = $neededAvgMarks > $totalMarks
+            $neededAvgMarks = ($stillNeededScore / $remainingWeight) * $remainingTotalMarks;
+            $result[$label] = $neededAvgMarks > $remainingTotalMarks
                 ? 'Not possible'
-                : round($neededAvgMarks, 1) . ' / ' . $totalMarks . ' on remaining assignments';
+                : round($neededAvgMarks, 1) . ' / ' . $remainingTotalMarks . ' on remaining assignments';
         }
 
         return $result;
