@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@source "./**/*.php";
+
+@theme {
+    --shadow-blue-xl:
+            8px 8px 0 0 rgba(59, 130, 246, 1),
+            12px 16px 24px 6px rgba(59, 130, 246, 0.95),
+            18px 28px 40px 10px rgba(59, 130, 246, 0.9);
+}
